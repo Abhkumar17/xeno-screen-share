@@ -1,4 +1,5 @@
-const { app, BrowserWindow, ipcMain } = require('electron')
+import electron, { ipcRenderer } from 'electron'
+//const { app, BrowserWindow, ipcMain } = require('electron')
 const { v4: uuidv4 } = require('uuid');
 const screenshot = require('screenshot-desktop');
 
