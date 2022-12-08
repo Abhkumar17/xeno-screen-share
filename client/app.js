@@ -1,11 +1,13 @@
 //import electron, { ipcRenderer } from 'electron'
 const { app, BrowserWindow, ipcMain } = require('electron')
+
 //const electron = window.require("electron")
+//import { app, BrowserWindow } from 'electron'
 const { v4: uuidv4 } = require('uuid');
 const screenshot = require('screenshot-desktop');
 
 var socket = require('socket.io-client')('http://localhost:5000');
- 
+ console.log(socket);
 var interval;
 const ipc = require('electron').ipcMain;
 ipc.on('someSignal', function (event, structure) {
@@ -16,10 +18,12 @@ function createWindow () {
         width: 500,
         height: 150,
         webPreferences: {
-            nodeIntegration: false
+            nodeIntegration: true,
+            contextIsolation: false,
+            enableRemoteModule: true,
         }
     })
-    win.removeMenu();
+    //win.removeMenu();
     win.loadFile('index.html')
     win.webContents.openDevTools()
 }
