@@ -1,5 +1,6 @@
-import electron, { ipcRenderer } from 'electron'
-//const { app, BrowserWindow, ipcMain } = require('electron')
+//import electron, { ipcRenderer } from 'electron'
+const { app, BrowserWindow, ipcMain } = require('electron')
+//const electron = window.require("electron")
 const { v4: uuidv4 } = require('uuid');
 const screenshot = require('screenshot-desktop');
 
@@ -15,7 +16,7 @@ function createWindow () {
         width: 500,
         height: 150,
         webPreferences: {
-            nodeIntegration: true
+            nodeIntegration: false
         }
     })
     win.removeMenu();
