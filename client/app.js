@@ -1,13 +1,10 @@
-//import electron, { ipcRenderer } from 'electron'
 const { app, BrowserWindow, ipcMain } = require('electron')
-
-//const electron = window.require("electron")
-//import { app, BrowserWindow } from 'electron'
 const { v4: uuidv4 } = require('uuid');
 const screenshot = require('screenshot-desktop');
+var robot = require("robotjs");
 
 var socket = require('socket.io-client')('http://localhost:5000');
- console.log(socket);
+  
 var interval;
 const ipc = require('electron').ipcMain;
 ipc.on('someSignal', function (event, structure) {
@@ -25,7 +22,30 @@ function createWindow () {
     })
     //win.removeMenu();
     win.loadFile('index.html')
-    win.webContents.openDevTools()
+
+     socket.on("mouse.move",function(data){
+        var obj = JSON.parse(data);
+        var x = obj.x;
+        var y = obj.y;
+
+        robot.moveMouse(x, y);
+     })
+
+     socket.on("mouse.click",function(data){
+        robot.mouseClick();
+
+     })
+
+     socket.on("type", function(data){
+        var obj = JSON.parse(data);
+        var key = obj.key;
+
+        robot.keyTap(key);
+    })
+
+
+
+    //win.webContents.openDevTools()
 }
 
 
@@ -45,13 +65,13 @@ app.on('activate', () => {
 
 ipcMain.on("start-share", function(event, arg) {
 
-    var uuid = uuidv4();
+    var uuid = "abhi"//uuidv4();
     socket.emit("join-message", uuid);
     event.reply("uuid", uuid);
 
     interval = setInterval(function() {
         screenshot().then((img) => {
-            var imgStr = new Buffer(img).toString('base64');
+            var imgStr = Buffer.from(img).toString('base64');
 
             var obj = {};
             obj.room = uuid;
